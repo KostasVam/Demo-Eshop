@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <title>Basket</title>
+</head>
+<body>
+<h1>Basket</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${basket}">
+        <td th:text="${item.value.name}"></td>
+        <td th:text="${item.value.price}"></td>
+        <td>
+            <form th:action="@{/updateBasket}" method="post">
+                <input type="hidden" name="itemId" th:value="${item.key}"/>
+                <input type="number" name="quantity" th:value="${item.value.quantity}"/>
+                <input type="submit" value="Update"/>
+            </form>
+        </td>
+        <td>
+            <form th:action="@{/basket/remove}" method="post">
+                <input type="hidden" name="itemId" th:value="${item.key}"/>
+                <input type="submit" value="Remove"/>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h2>Total: €<span th:text="${total}"></span></h2>
+<h2 th:if="${discount}">Discount (10%): -€<span th:text="${discount}"></span></h2>
+<h2>Shipping cost: €<span th:text="${shippingCost}"></span></h2>
+<h2>Final price: €<span th:text="${finalPrice}"></span></h2>
+<h1>Add Item</h1>
+<form th:action="@{/basket/add}" method="post">
+    <label>Select Item:</label>
+    <select name="itemId">
+        <option th:each="item : ${items}" th:value="${item.id}" th:text="${item.name}"></option>
+    </select>
+    <br>
+    <input type="submit" value="Add Item">
+</form>
+</body>
+</html>
